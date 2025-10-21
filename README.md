@@ -1,69 +1,51 @@
 # 📊 GitHub Stats Dashboard
 
-Красивый и интерактивный дашборд для анализа статистики GitHub профилей, созданный на Python с использованием Flask.
+A beautiful and interactive dashboard for analyzing GitHub profiles, built with Python and Flask.
 
 ![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)
 ![Flask](https://img.shields.io/badge/Flask-3.0.0-green.svg)
 ![License](https://img.shields.io/badge/License-MIT-yellow.svg)
+![Version](https://img.shields.io/badge/Version-2.0.0-orange.svg)
 
-## ✨ Особенности
+[🇷🇺 Русская версия](README_RU.md)
 
-- 🎨 **Современный UI/UX дизайн** с темной/светлой темой и анимациями
-- 📈 **Интерактивные графики** с использованием Plotly (10+ графиков!)
-- 📊 **Подробная статистика** профиля и репозиториев
-- 🌐 **Адаптивный дизайн** для всех устройств
-- ⚡ **Быстрая загрузка** данных с кешированием
-- 🔄 **Сравнение пользователей** - сопоставьте два GitHub профиля
-- 📥 **Экспорт в PDF** - сохраните статистику через печать браузера
-- 📜 **История поиска** - быстрый доступ к предыдущим запросам
-- 🏢 **Поддержка организаций** - анализ GitHub организаций
-- 🎯 **Визуализация данных**:
-  - Распределение языков программирования
-  - Топ репозитории по звездам
-  - График активности обновлений
-  - Соотношение звезд и форков
-  - Активность по дням недели
-  - Типы репозиториев (собственные/форки)
-  - Репозитории по годам создания
-  - И многое другое!
+## ✨ Features
 
-## 📸 Скриншоты
+- 🎨 **Modern UI/UX Design** with dark/light theme and smooth animations
+- 📈 **Interactive Charts** using Plotly (10+ visualizations!)
+- 📊 **Detailed Statistics** for profiles and repositories
+- 🌐 **Responsive Design** for all devices
+- ⚡ **Fast Data Loading** with intelligent caching
+- 🔄 **User Comparison** - compare two GitHub profiles side-by-side
+- 📥 **Export to PDF** - save statistics via browser print
+- 📜 **Search History** - quick access to previous searches
+- 🏢 **Organization Support** - analyze GitHub organizations
+- 🎯 **Data Visualization**:
+  - Programming languages distribution
+  - Top repositories by stars
+  - Activity timeline
+  - Stars vs Forks correlation
+  - Weekly activity patterns
+  - Repository types (source/forks)
+  - Repositories by creation year
+  - And much more!
 
-### Главная страница
-Введите любой GitHub username и получите полную статистику!
+## 🚀 Quick Start
 
-### Профиль пользователя
-- Аватар и основная информация
-- Подписчики, подписки, репозитории
-- Местоположение, компания, дата регистрации
+### Requirements
 
-### Статистика
-- Общее количество звезд, форков, watchers
-- Топ репозитории с подробной информацией
-- Статистика по языкам программирования
+- Python 3.8 or higher
+- pip (Python package manager)
 
-### Графики
-- Круговая диаграмма языков
-- Барчарт топ репозиториев
-- График активности обновлений
-- Scatter plot звезд vs форков
+### Installation
 
-## 🚀 Быстрый старт
-
-### Требования
-
-- Python 3.8 или выше
-- pip (менеджер пакетов Python)
-
-### Установка
-
-1. **Клонируйте репозиторий**
+1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/github-stats-dashboard.git
+   git clone https://github.com/ETsETs777/github-stats-dashboard.git
    cd github-stats-dashboard
    ```
 
-2. **Создайте виртуальное окружение** (рекомендуется)
+2. **Create a virtual environment** (recommended)
    ```bash
    # Windows
    python -m venv venv
@@ -74,89 +56,114 @@
    source venv/bin/activate
    ```
 
-3. **Установите зависимости**
+3. **Install dependencies**
    ```bash
    pip install -r requirements.txt
    ```
 
-4. **Создайте файл .env** (опционально, для GitHub токена)
+4. **Create .env file** (optional, for GitHub token)
    ```bash
-   # Создайте файл .env в корне проекта
+   # Create .env file in project root
    GITHUB_TOKEN=your_github_personal_access_token_here
    SECRET_KEY=your_secret_key_here
    DEBUG=True
    ```
 
-   > 💡 **Примечание**: GitHub токен не обязателен, но рекомендуется для увеличения лимита запросов API (5000 вместо 60 в час)
+   > 💡 **Note**: GitHub token is optional but recommended to increase API rate limit (5000 instead of 60 requests per hour)
 
-5. **Запустите приложение**
+5. **Run the application**
    ```bash
    python app.py
+   # or
+   python run.py
    ```
 
-6. **Откройте в браузере**
+6. **Open in browser**
    ```
    http://localhost:5000
    ```
 
-## 🔑 Получение GitHub Token (опционально)
+## 🔑 Getting GitHub Token (Optional)
 
-Для увеличения лимита запросов к GitHub API:
+To increase GitHub API rate limits:
 
-1. Перейдите на https://github.com/settings/tokens
-2. Нажмите "Generate new token (classic)"
-3. Укажите название токена (например, "GitHub Stats Dashboard")
-4. Выберите область видимости: `public_repo` и `read:user`
-5. Нажмите "Generate token"
-6. Скопируйте токен и добавьте в файл `.env`
+1. Go to https://github.com/settings/tokens
+2. Click "Generate new token (classic)"
+3. Enter token name (e.g., "GitHub Stats Dashboard")
+4. Select scopes: `public_repo` and `read:user`
+5. Click "Generate token"
+6. Copy the token and add it to `.env` file
 
-## 📁 Структура проекта
+## 📸 Screenshots
+
+### Main Dashboard
+Enter any GitHub username and get comprehensive statistics!
+
+### Features Overview
+- **User Comparison**: Compare two users side-by-side with winner badges
+- **Dark/Light Theme**: Toggle between themes with instant switching
+- **Search History**: Quick access to your 10 most recent searches
+- **Export Options**: Print to PDF or copy URL for screenshots
+- **Organization Support**: Full support for GitHub organizations
+
+### Visualizations
+- Language distribution pie chart
+- Top repositories bar chart
+- Activity timeline graph
+- Stars vs Forks scatter plot
+- Weekly activity patterns
+- Repository types breakdown
+- Creation year distribution
+- Grouped statistics charts
+
+## 📁 Project Structure
 
 ```
 github-stats-dashboard/
-├── app.py                  # Основное Flask приложение
-├── github_api.py          # Модуль для работы с GitHub API
-├── config.py              # Конфигурация приложения
-├── cache.py               # Система кеширования
+├── app.py                  # Main Flask application
+├── github_api.py          # GitHub API interaction module
+├── config.py              # Application configuration
+├── cache.py               # Caching system
 ├── run.py                 # Launcher script
-├── requirements.txt       # Зависимости Python
-├── README.md             # Документация
-├── .env                  # Переменные окружения (создается вручную)
-├── .gitignore           # Игнорируемые файлы Git
-├── static/              # Статические файлы
+├── requirements.txt       # Python dependencies
+├── README.md             # Documentation (English)
+├── README_RU.md          # Documentation (Russian)
+├── .env                  # Environment variables (create manually)
+├── .gitignore           # Git ignored files
+├── static/              # Static files
 │   ├── css/
-│   │   └── style.css    # Стили CSS
+│   │   └── style.css    # CSS styles
 │   └── js/
-│       └── main.js      # JavaScript код
-└── templates/           # HTML шаблоны
-    └── index.html       # Главная страница
+│       └── main.js      # JavaScript code
+└── templates/           # HTML templates
+    └── index.html       # Main page
 ```
 
-## 🛠️ Используемые технологии
+## 🛠️ Technologies Used
 
 ### Backend
-- **Flask** - веб-фреймворк Python
-- **PyGithub** - библиотека для работы с GitHub API
-- **Plotly** - создание интерактивных графиков
-- **python-dotenv** - управление переменными окружения
+- **Flask** - Python web framework
+- **PyGithub** - GitHub API library
+- **Plotly** - Interactive chart generation
+- **python-dotenv** - Environment variables management
 
 ### Frontend
-- **HTML5** - разметка
-- **CSS3** - стилизация с градиентами и анимациями
-- **JavaScript (Vanilla)** - интерактивность
-- **Bootstrap 5** - адаптивная сетка и компоненты
-- **Font Awesome** - иконки
-- **Google Fonts (Inter)** - шрифты
+- **HTML5** - Markup
+- **CSS3** - Styling with gradients and animations
+- **JavaScript (Vanilla)** - Interactivity without frameworks
+- **Bootstrap 5** - Responsive grid and components
+- **Font Awesome** - Icons
+- **Google Fonts (Inter)** - Typography
 
 ## 📊 API Endpoints
 
-- `GET /` - Главная страница
-- `GET /api/stats/<username>` - Получить статистику пользователя
-- `GET /api/compare/<username1>/<username2>` - Сравнить двух пользователей
-- `POST /api/cache/clear` - Очистить кеш
-- `GET /api/health` - Проверка работоспособности API
+- `GET /` - Main page
+- `GET /api/stats/<username>` - Get user statistics
+- `GET /api/compare/<username1>/<username2>` - Compare two users
+- `POST /api/cache/clear` - Clear cache
+- `GET /api/health` - API health check
 
-### Пример ответа API
+### Example API Response
 
 ```json
 {
@@ -179,98 +186,175 @@ github-stats-dashboard/
       "total_languages": 10,
       "languages": [...]
     },
+    "activity": {
+      "active_repos_last_year": 50,
+      "weekly_pattern": {...},
+      "repo_types": {...}
+    },
     "charts": {...}
   }
 }
 ```
 
-## ⚙️ Конфигурация
+## ⚙️ Configuration
 
-Вы можете настроить приложение через файл `config.py`:
+Configure the application via `config.py`:
 
-- `SECRET_KEY` - секретный ключ Flask
-- `DEBUG` - режим отладки
-- `GITHUB_TOKEN` - токен GitHub API
-- `MAX_REPOS` - максимальное количество репозиториев для анализа (по умолчанию 100)
-- `TOP_REPOS_COUNT` - количество топ репозиториев для отображения (по умолчанию 10)
+- `SECRET_KEY` - Flask secret key
+- `DEBUG` - Debug mode
+- `GITHUB_TOKEN` - GitHub API token
+- `CACHE_TIMEOUT` - Cache TTL in seconds (default: 3600)
+- `MAX_REPOS` - Maximum repositories to analyze (default: 100)
+- `TOP_REPOS_COUNT` - Top repositories to display (default: 10)
 
-## 🎨 Кастомизация
+## 🎨 Customization
 
-### Изменение цветовой схемы
+### Change Color Scheme
 
-Откройте `static/css/style.css` и измените переменные градиентов:
+Open `static/css/style.css` and modify gradient variables:
 
 ```css
 background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
 ```
 
-### Изменение количества отображаемых репозиториев
+### Change Number of Displayed Repositories
 
-В файле `config.py`:
+In `config.py`:
 
 ```python
-TOP_REPOS_COUNT = 10  # Измените на нужное значение
+TOP_REPOS_COUNT = 10  # Change to desired value
 ```
 
-## 🐛 Решение проблем
+### Modify Cache Duration
 
-### Ошибка "API rate limit exceeded"
+In `config.py`:
 
-- Добавьте GitHub токен в файл `.env`
-- Подождите некоторое время (лимит сбрасывается каждый час)
+```python
+CACHE_TIMEOUT = 3600  # Time in seconds (1 hour)
+```
 
-### Ошибка "User not found"
+## 🐛 Troubleshooting
 
-- Проверьте правильность написания username
-- Убедитесь, что профиль публичный
+### "API rate limit exceeded" Error
 
-### Приложение не запускается
+- Add GitHub token to `.env` file
+- Wait some time (limit resets every hour)
+- Clear cache using `/api/cache/clear` endpoint
 
-- Убедитесь, что установлены все зависимости: `pip install -r requirements.txt`
-- Проверьте версию Python: `python --version` (должна быть 3.8+)
-- Проверьте, что порт 5000 не занят другим приложением
+### "User not found" Error
 
-## 📝 Лицензия
+- Check username spelling
+- Ensure profile is public
+- Verify internet connection
 
-MIT License - свободно используйте для своих проектов!
+### Application Won't Start
 
-## 🤝 Вклад в проект
+- Ensure all dependencies are installed: `pip install -r requirements.txt`
+- Check Python version: `python --version` (must be 3.8+)
+- Verify port 5000 is not in use by another application
+- Check if virtual environment is activated
 
-Вклад приветствуется! Пожалуйста:
+### Charts Not Displaying
 
-1. Сделайте Fork репозитория
-2. Создайте ветку для новой функции (`git checkout -b feature/AmazingFeature`)
-3. Сделайте commit изменений (`git commit -m 'Add some AmazingFeature'`)
-4. Отправьте в ветку (`git push origin feature/AmazingFeature`)
-5. Откройте Pull Request
+- Ensure JavaScript is enabled in browser
+- Check browser console for errors
+- Try clearing browser cache
+- Verify Plotly CDN is accessible
 
-## 🔗 Полезные ссылки
+## 📈 Implemented Features
+
+- [x] User comparison ✅
+- [x] Export to PDF/PNG ✅
+- [x] Search history ✅
+- [x] Enhanced visualizations ✅
+- [x] Contribution activity analysis ✅
+- [x] Organization support ✅
+- [x] Dark/Light theme toggle ✅
+- [x] Data caching ✅
+
+## 🎯 Future Enhancements
+
+- [ ] GitHub Actions integration
+- [ ] Real-time updates via WebSocket
+- [ ] Historical comparison (show growth over time)
+- [ ] Export to CSV/Excel
+- [ ] Integration with other platforms (GitLab, Bitbucket)
+- [ ] Multi-language support
+- [ ] Advanced filtering options
+- [ ] Customizable dashboards
+- [ ] Email reports
+
+## 📝 License
+
+MIT License - free to use for your projects!
+
+## 🤝 Contributing
+
+Contributions are welcome! Please:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+### Development Guidelines
+
+- Follow PEP 8 style guide for Python code
+- Write clean, readable code
+- Add comments for complex logic
+- Test your changes thoroughly
+- Update documentation as needed
+
+## 🔗 Useful Links
 
 - [GitHub API Documentation](https://docs.github.com/en/rest)
 - [Flask Documentation](https://flask.palletsprojects.com/)
 - [Plotly Python](https://plotly.com/python/)
 - [Bootstrap 5](https://getbootstrap.com/)
+- [Font Awesome](https://fontawesome.com/)
 
-## 📈 Реализованные функции
+## 📧 Contact
 
-- [x] Добавить сравнение двух пользователей ✅
-- [x] Экспорт статистики в PDF/PNG ✅
-- [x] История поиска ✅
-- [x] Больше графиков и визуализаций ✅
-- [x] Анализ contribution activity ✅
-- [x] Поддержка организаций ✅
-- [x] Темная/светлая тема (переключатель) ✅
-- [x] Кеширование данных ✅
+Have questions or suggestions? Feel free to:
+- Open an issue
+- Submit a pull request
+- Contact the maintainer
 
-## 🎯 Будущие улучшения
+## 🌟 Show Your Support
 
-- [ ] GitHub Actions интеграция
-- [ ] Real-time обновления через WebSocket
-- [ ] Сравнение истории (показывать рост во времени)
-- [ ] Экспорт в CSV/Excel
-- [ ] Интеграция с другими платформами (GitLab, Bitbucket)
+If this project helped you, please give it a ⭐ on GitHub!
+
+## 📊 Project Stats
+
+- **Version**: 2.0.0
+- **License**: MIT
+- **Python**: 3.8+
+- **Framework**: Flask 3.0.0
+- **Charts**: Plotly 5.18.0
 
 ---
 
-⭐ Поставьте звезду, если проект был полезен!
+**Built with ❤️ using Python and Flask**
+
+---
+
+## 🎨 Demo
+
+Try it with popular GitHub users:
+- `torvalds` - Linus Torvalds (Linux creator)
+- `gvanrossum` - Guido van Rossum (Python creator)
+- `tj` - TJ Holowaychuk
+- `sindresorhus` - Sindre Sorhus
+- `microsoft` - Microsoft Organization
+- `google` - Google Organization
+
+Compare users:
+- `torvalds` vs `gvanrossum`
+- `facebook` vs `google`
+- Your username vs your favorite developer!
+
+---
+
+⭐ **Star this repo if you found it useful!** ⭐
 
