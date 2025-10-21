@@ -4,6 +4,7 @@ from datetime import datetime, timedelta, timezone
 import plotly.graph_objects as go
 import plotly.express as px
 from config import Config
+from cache import SimpleCache
 
 
 class GitHubStats:
@@ -12,8 +13,15 @@ class GitHubStats:
         self.github = Github(token) if token else Github()
         self.user = None
         self.repos = []
+        self.cache = SimpleCache(ttl_seconds=Config.CACHE_TIMEOUT)
         
     def get_user_stats(self, username):
+        cache_key = f'user_stats_{username}'
+        cached_data = self.cache.get(cache_key)
+        
+        if cached_data:
+            return cached_data
+        
         try:
             self.user = self.github.get_user(username)
             self.repos = list(self.user.get_repos())[:Config.MAX_REPOS]
@@ -26,7 +34,9 @@ class GitHubStats:
                 'charts': self._generate_charts()
             }
             
-            return {'success': True, 'data': stats}
+            result = {'success': True, 'data': stats}
+            self.cache.set(cache_key, result)
+            return result
             
         except GithubException as e:
             return {'success': False, 'error': f'Ошибка GitHub API: {str(e)}'}

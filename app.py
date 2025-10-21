@@ -52,12 +52,21 @@ def compare_users(username1, username2):
         return jsonify({'success': False, 'error': str(e)}), 500
 
 
+@app.route('/api/cache/clear', methods=['POST'])
+def clear_cache():
+    try:
+        github_stats.cache.clear()
+        return jsonify({'success': True, 'message': 'Cache cleared successfully'})
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+
 @app.route('/api/health')
 def health_check():
     return jsonify({
         'status': 'healthy',
         'service': 'GitHub Stats Dashboard',
-        'version': '1.1.0'
+        'version': '1.2.0'
     })
 
 
