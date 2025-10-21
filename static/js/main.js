@@ -184,53 +184,69 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('totalWatchers').textContent = formatNumber(data.repositories.total_watchers);
         document.getElementById('totalLanguages').textContent = formatNumber(data.languages.total_languages);
 
-        // Графики
+        // Графики - показываем только если есть данные
+        const chartElement1 = document.getElementById('languagesChart');
         if (data.charts.languages_pie) {
-            document.getElementById('languagesChart').innerHTML = data.charts.languages_pie;
+            chartElement1.innerHTML = data.charts.languages_pie;
+            chartElement1.closest('.chart-card').style.display = 'block';
         } else {
-            document.getElementById('languagesChart').innerHTML = '<p class="text-center text-muted p-5">📊 Нет данных о языках программирования</p>';
+            chartElement1.closest('.chart-card').style.display = 'none';
         }
         
+        const chartElement2 = document.getElementById('topReposChart');
         if (data.charts.top_repos_bar) {
-            document.getElementById('topReposChart').innerHTML = data.charts.top_repos_bar;
+            chartElement2.innerHTML = data.charts.top_repos_bar;
+            chartElement2.closest('.chart-card').style.display = 'block';
         } else {
-            document.getElementById('topReposChart').innerHTML = '<p class="text-center text-muted p-5">📚 Нет репозиториев для отображения</p>';
+            chartElement2.closest('.chart-card').style.display = 'none';
         }
         
+        const chartElement3 = document.getElementById('activityChart');
         if (data.charts.activity_timeline) {
-            document.getElementById('activityChart').innerHTML = data.charts.activity_timeline;
+            chartElement3.innerHTML = data.charts.activity_timeline;
+            chartElement3.closest('.chart-card').style.display = 'block';
         } else {
-            document.getElementById('activityChart').innerHTML = '<p class="text-center text-muted p-5">📈 Нет активности за последний год</p>';
+            chartElement3.closest('.chart-card').style.display = 'none';
         }
         
+        const chartElement4 = document.getElementById('scatterChart');
         if (data.charts.stars_vs_forks) {
-            document.getElementById('scatterChart').innerHTML = data.charts.stars_vs_forks;
+            chartElement4.innerHTML = data.charts.stars_vs_forks;
+            chartElement4.closest('.chart-card').style.display = 'block';
         } else {
-            document.getElementById('scatterChart').innerHTML = '<p class="text-center text-muted p-5">⭐ Нет данных для отображения</p>';
+            chartElement4.closest('.chart-card').style.display = 'none';
         }
         
+        const chartElement5 = document.getElementById('reposByYearChart');
         if (data.charts.repos_by_year) {
-            document.getElementById('reposByYearChart').innerHTML = data.charts.repos_by_year;
+            chartElement5.innerHTML = data.charts.repos_by_year;
+            chartElement5.closest('.chart-card').style.display = 'block';
         } else {
-            document.getElementById('reposByYearChart').innerHTML = '<p class="text-center text-muted p-5">📅 Нет данных для отображения</p>';
+            chartElement5.closest('.chart-card').style.display = 'none';
         }
         
+        const chartElement6 = document.getElementById('groupedChart');
         if (data.charts.stars_forks_grouped) {
-            document.getElementById('groupedChart').innerHTML = data.charts.stars_forks_grouped;
+            chartElement6.innerHTML = data.charts.stars_forks_grouped;
+            chartElement6.closest('.chart-card').style.display = 'block';
         } else {
-            document.getElementById('groupedChart').innerHTML = '<p class="text-center text-muted p-5">📊 Нет данных для отображения</p>';
+            chartElement6.closest('.chart-card').style.display = 'none';
         }
         
+        const chartElement7 = document.getElementById('weeklyActivityChart');
         if (data.charts.weekly_activity) {
-            document.getElementById('weeklyActivityChart').innerHTML = data.charts.weekly_activity;
+            chartElement7.innerHTML = data.charts.weekly_activity;
+            chartElement7.closest('.chart-card').style.display = 'block';
         } else {
-            document.getElementById('weeklyActivityChart').innerHTML = '<p class="text-center text-muted p-5">📅 Нет данных для отображения</p>';
+            chartElement7.closest('.chart-card').style.display = 'none';
         }
         
+        const chartElement8 = document.getElementById('repoTypesChart');
         if (data.charts.repo_types_pie) {
-            document.getElementById('repoTypesChart').innerHTML = data.charts.repo_types_pie;
+            chartElement8.innerHTML = data.charts.repo_types_pie;
+            chartElement8.closest('.chart-card').style.display = 'block';
         } else {
-            document.getElementById('repoTypesChart').innerHTML = '<p class="text-center text-muted p-5">🔀 Нет данных для отображения</p>';
+            chartElement8.closest('.chart-card').style.display = 'none';
         }
 
         // Топ репозитории
@@ -246,12 +262,15 @@ document.addEventListener('DOMContentLoaded', function() {
     // Отображение топ репозиториев
     function displayTopRepos(repos) {
         const reposList = document.getElementById('topReposList');
+        const reposCard = reposList.closest('.repos-card');
         reposList.innerHTML = '';
 
         if (!repos || repos.length === 0) {
-            reposList.innerHTML = '<p class="text-center text-muted p-5">📚 Нет репозиториев для отображения</p>';
+            if (reposCard) reposCard.style.display = 'none';
             return;
         }
+        
+        if (reposCard) reposCard.style.display = 'block';
 
         repos.forEach((repo, index) => {
             const repoItem = document.createElement('div');
@@ -288,14 +307,15 @@ document.addEventListener('DOMContentLoaded', function() {
     // Отображение таблицы языков
     function displayLanguagesTable(languages) {
         const table = document.getElementById('languagesTable');
+        const langsCard = table.closest('.langs-card');
         table.innerHTML = '';
 
         if (!languages || languages.length === 0) {
-            const row = document.createElement('tr');
-            row.innerHTML = '<td colspan="5" class="text-center text-muted p-4">💻 Нет данных о языках программирования</td>';
-            table.appendChild(row);
+            if (langsCard) langsCard.style.display = 'none';
             return;
         }
+        
+        if (langsCard) langsCard.style.display = 'block';
 
         languages.forEach((lang, index) => {
             const row = document.createElement('tr');
