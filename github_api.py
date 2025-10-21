@@ -1,6 +1,6 @@
 from github import Github, GithubException
 from collections import Counter, defaultdict
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import plotly.graph_objects as go
 import plotly.express as px
 from config import Config
@@ -124,7 +124,7 @@ class GitHubStats:
         """Получить статистику активности"""
         # Анализируем последние обновления репозиториев
         recent_updates = []
-        one_year_ago = datetime.now() - timedelta(days=365)
+        one_year_ago = datetime.now(timezone.utc) - timedelta(days=365)
         
         for repo in self.repos:
             if repo.updated_at > one_year_ago:
@@ -198,7 +198,7 @@ class GitHubStats:
             charts['top_repos_bar'] = fig_repos.to_html(full_html=False, include_plotlyjs='cdn')
         
         # 3. График активности по месяцам
-        one_year_ago = datetime.now() - timedelta(days=365)
+        one_year_ago = datetime.now(timezone.utc) - timedelta(days=365)
         monthly_activity = defaultdict(int)
         
         for repo in self.repos:
