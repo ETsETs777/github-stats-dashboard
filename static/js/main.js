@@ -22,6 +22,19 @@ document.addEventListener('DOMContentLoaded', function() {
     const themeIcon = document.getElementById('themeIcon');
     const exportBtn = document.getElementById('exportBtn');
     
+    // Функция для вставки HTML с выполнением скриптов
+    function setInnerHTMLWithScripts(element, html) {
+        element.innerHTML = html;
+        Array.from(element.querySelectorAll('script')).forEach(oldScript => {
+            const newScript = document.createElement('script');
+            Array.from(oldScript.attributes).forEach(attr => 
+                newScript.setAttribute(attr.name, attr.value)
+            );
+            newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+            oldScript.parentNode.replaceChild(newScript, oldScript);
+        });
+    }
+    
     // Экспорт статистики
     exportBtn.addEventListener('click', function() {
         const exportMenu = confirm('Выберите способ экспорта:\nOK - Печать в PDF\nОтмена - Скопировать URL для скриншота');
@@ -194,44 +207,78 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         // Графики - показываем только если есть данные
+        console.log('Charts data:', Object.keys(data.charts));
+        
         if (data.charts.languages_pie) {
-            document.getElementById('languagesChart').innerHTML = data.charts.languages_pie;
-            document.getElementById('languagesChartCard').style.display = 'block';
+            const elem = document.getElementById('languagesChart');
+            if (elem) {
+                setInnerHTMLWithScripts(elem, data.charts.languages_pie);
+                document.getElementById('languagesChartCard').style.display = 'block';
+                console.log('Languages chart loaded');
+            }
         }
         
         if (data.charts.top_repos_bar) {
-            document.getElementById('topReposChart').innerHTML = data.charts.top_repos_bar;
-            document.getElementById('topReposChartCard').style.display = 'block';
+            const elem = document.getElementById('topReposChart');
+            if (elem) {
+                setInnerHTMLWithScripts(elem, data.charts.top_repos_bar);
+                document.getElementById('topReposChartCard').style.display = 'block';
+                console.log('Top repos chart loaded');
+            }
         }
         
         if (data.charts.activity_timeline) {
-            document.getElementById('activityChart').innerHTML = data.charts.activity_timeline;
-            document.getElementById('activityChartCard').style.display = 'block';
+            const elem = document.getElementById('activityChart');
+            if (elem) {
+                setInnerHTMLWithScripts(elem, data.charts.activity_timeline);
+                document.getElementById('activityChartCard').style.display = 'block';
+                console.log('Activity chart loaded');
+            }
         }
         
         if (data.charts.stars_vs_forks) {
-            document.getElementById('scatterChart').innerHTML = data.charts.stars_vs_forks;
-            document.getElementById('scatterChartCard').style.display = 'block';
+            const elem = document.getElementById('scatterChart');
+            if (elem) {
+                setInnerHTMLWithScripts(elem, data.charts.stars_vs_forks);
+                document.getElementById('scatterChartCard').style.display = 'block';
+                console.log('Scatter chart loaded');
+            }
         }
         
         if (data.charts.repos_by_year) {
-            document.getElementById('reposByYearChart').innerHTML = data.charts.repos_by_year;
-            document.getElementById('reposByYearChartCard').style.display = 'block';
+            const elem = document.getElementById('reposByYearChart');
+            if (elem) {
+                setInnerHTMLWithScripts(elem, data.charts.repos_by_year);
+                document.getElementById('reposByYearChartCard').style.display = 'block';
+                console.log('Repos by year chart loaded');
+            }
         }
         
         if (data.charts.stars_forks_grouped) {
-            document.getElementById('groupedChart').innerHTML = data.charts.stars_forks_grouped;
-            document.getElementById('groupedChartCard').style.display = 'block';
+            const elem = document.getElementById('groupedChart');
+            if (elem) {
+                setInnerHTMLWithScripts(elem, data.charts.stars_forks_grouped);
+                document.getElementById('groupedChartCard').style.display = 'block';
+                console.log('Grouped chart loaded');
+            }
         }
         
         if (data.charts.weekly_activity) {
-            document.getElementById('weeklyActivityChart').innerHTML = data.charts.weekly_activity;
-            document.getElementById('weeklyActivityChartCard').style.display = 'block';
+            const elem = document.getElementById('weeklyActivityChart');
+            if (elem) {
+                setInnerHTMLWithScripts(elem, data.charts.weekly_activity);
+                document.getElementById('weeklyActivityChartCard').style.display = 'block';
+                console.log('Weekly activity chart loaded');
+            }
         }
         
         if (data.charts.repo_types_pie) {
-            document.getElementById('repoTypesChart').innerHTML = data.charts.repo_types_pie;
-            document.getElementById('repoTypesChartCard').style.display = 'block';
+            const elem = document.getElementById('repoTypesChart');
+            if (elem) {
+                setInnerHTMLWithScripts(elem, data.charts.repo_types_pie);
+                document.getElementById('repoTypesChartCard').style.display = 'block';
+                console.log('Repo types chart loaded');
+            }
         }
 
         // Топ репозитории
@@ -259,12 +306,14 @@ document.addEventListener('DOMContentLoaded', function() {
             let hasVisibleCard = false;
             
             cards.forEach(card => {
-                if (card.style.display !== 'none') {
+                const displayStyle = window.getComputedStyle(card).display;
+                if (displayStyle !== 'none') {
                     hasVisibleCard = true;
                 }
             });
             
-            row.style.display = hasVisibleCard ? 'flex' : 'none';
+            row.style.display = hasVisibleCard ? '' : 'none';
+            console.log(`Row ${rowId}: ${hasVisibleCard ? 'visible' : 'hidden'}`);
         });
     }
 
