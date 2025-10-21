@@ -125,18 +125,42 @@ class GitHubStats:
         recent_updates = []
         one_year_ago = datetime.now(timezone.utc) - timedelta(days=365)
         
+        repo_types = {'source': 0, 'fork': 0}
+        recent_repos = []
+        
         for repo in self.repos:
+            if repo.fork:
+                repo_types['fork'] += 1
+            else:
+                repo_types['source'] += 1
+                
             if repo.updated_at > one_year_ago:
                 recent_updates.append(repo.updated_at)
+                recent_repos.append(repo)
         
         monthly_activity = defaultdict(int)
         for date in recent_updates:
             month_key = date.strftime('%Y-%m')
             monthly_activity[month_key] += 1
         
+        weekly_pattern = defaultdict(int)
+        for date in recent_updates:
+            day_of_week = date.strftime('%A')
+            weekly_pattern[day_of_week] += 1
+        
+        days_order = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+        sorted_weekly = {day: weekly_pattern.get(day, 0) for day in days_order}
+        
+        avg_stars_per_repo = sum(r.stargazers_count for r in recent_repos) / len(recent_repos) if recent_repos else 0
+        
         return {
             'active_repos_last_year': len(recent_updates),
-            'monthly_activity': dict(sorted(monthly_activity.items()))
+            'monthly_activity': dict(sorted(monthly_activity.items())),
+            'repo_types': repo_types,
+            'weekly_pattern': sorted_weekly,
+            'avg_stars_active': round(avg_stars_per_repo, 2),
+            'total_source_repos': repo_types['source'],
+            'total_fork_repos': repo_types['fork']
         }
     
     def _generate_charts(self):
@@ -322,6 +346,50 @@ class GitHubStats:
                 height=400
             )
             charts['stars_forks_grouped'] = fig_grouped.to_html(full_html=False, include_plotlyjs='cdn')
+        
+        activity_stats = self._get_activity_stats()
+        if activity_stats['weekly_pattern']:
+            days = list(activity_stats['weekly_pattern'].keys())
+            days_ru = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс']
+            counts = list(activity_stats['weekly_pattern'].values())
+            
+            fig_weekly = go.Figure(data=[
+                go.Bar(
+                    x=days_ru,
+                    y=counts,
+                    marker=dict(
+                        color=['#5865f2' if i < 5 else '#43b581' for i in range(7)],
+                    ),
+                    text=counts,
+                    textposition='auto'
+                )
+            ])
+            fig_weekly.update_layout(
+                title='Активность по дням недели',
+                xaxis_title='День недели',
+                yaxis_title='Обновлений репозиториев',
+                template='plotly_dark',
+                paper_bgcolor='rgba(0,0,0,0)',
+                plot_bgcolor='rgba(0,0,0,0)',
+                font=dict(color='white', size=12),
+                height=350
+            )
+            charts['weekly_activity'] = fig_weekly.to_html(full_html=False, include_plotlyjs='cdn')
+        
+        if activity_stats['repo_types']:
+            fig_types = px.pie(
+                values=list(activity_stats['repo_types'].values()),
+                names=['Собственные', 'Форки'],
+                title='Типы репозиториев',
+                color_discrete_sequence=['#5865f2', '#43b581']
+            )
+            fig_types.update_layout(
+                template='plotly_dark',
+                paper_bgcolor='rgba(0,0,0,0)',
+                plot_bgcolor='rgba(0,0,0,0)',
+                font=dict(color='white', size=12)
+            )
+            charts['repo_types_pie'] = fig_types.to_html(full_html=False, include_plotlyjs='cdn')
         
         return charts
     

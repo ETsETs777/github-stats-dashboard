@@ -220,6 +220,18 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             document.getElementById('groupedChart').innerHTML = '<p class="text-center text-muted p-5">📊 Нет данных для отображения</p>';
         }
+        
+        if (data.charts.weekly_activity) {
+            document.getElementById('weeklyActivityChart').innerHTML = data.charts.weekly_activity;
+        } else {
+            document.getElementById('weeklyActivityChart').innerHTML = '<p class="text-center text-muted p-5">📅 Нет данных для отображения</p>';
+        }
+        
+        if (data.charts.repo_types_pie) {
+            document.getElementById('repoTypesChart').innerHTML = data.charts.repo_types_pie;
+        } else {
+            document.getElementById('repoTypesChart').innerHTML = '<p class="text-center text-muted p-5">🔀 Нет данных для отображения</p>';
+        }
 
         // Топ репозитории
         displayTopRepos(data.repositories.top_repos);
