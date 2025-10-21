@@ -260,6 +260,8 @@ class GitHubStats:
             charts['activity_timeline'] = fig_activity.to_html(full_html=False, include_plotlyjs='cdn')
         
         repos_with_stars = [r for r in self.repos if r.stargazers_count > 0]
+        if not repos_with_stars and self.repos:
+            repos_with_stars = self.repos[:10]
         if repos_with_stars:
             fig_scatter = go.Figure(data=[
                 go.Scatter(
@@ -325,7 +327,7 @@ class GitHubStats:
             charts['repos_by_year'] = fig_yearly.to_html(full_html=False, include_plotlyjs='cdn')
         
         top_10_repos = sorted(self.repos, key=lambda r: r.stargazers_count, reverse=True)[:10]
-        if top_10_repos:
+        if top_10_repos and len(top_10_repos) > 0:
             repo_names_short = [r.name[:20] for r in top_10_repos]
             stars = [r.stargazers_count for r in top_10_repos]
             forks = [r.forks_count for r in top_10_repos]
@@ -348,7 +350,7 @@ class GitHubStats:
             charts['stars_forks_grouped'] = fig_grouped.to_html(full_html=False, include_plotlyjs='cdn')
         
         activity_stats = self._get_activity_stats()
-        if activity_stats['weekly_pattern']:
+        if activity_stats.get('weekly_pattern') and sum(activity_stats['weekly_pattern'].values()) > 0:
             days = list(activity_stats['weekly_pattern'].keys())
             days_ru = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс']
             counts = list(activity_stats['weekly_pattern'].values())
@@ -376,7 +378,7 @@ class GitHubStats:
             )
             charts['weekly_activity'] = fig_weekly.to_html(full_html=False, include_plotlyjs='cdn')
         
-        if activity_stats['repo_types']:
+        if activity_stats.get('repo_types') and sum(activity_stats['repo_types'].values()) > 0:
             fig_types = px.pie(
                 values=list(activity_stats['repo_types'].values()),
                 names=['Собственные', 'Форки'],
