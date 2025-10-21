@@ -2,13 +2,39 @@
 
 document.addEventListener('DOMContentLoaded', function() {
     const searchForm = document.getElementById('searchForm');
+    const compareForm = document.getElementById('compareForm');
     const usernameInput = document.getElementById('username');
     const loading = document.getElementById('loading');
     const error = document.getElementById('error');
     const errorMessage = document.getElementById('errorMessage');
     const statsSection = document.getElementById('statsSection');
+    const comparisonSection = document.getElementById('comparisonSection');
+    const toggleModeBtn = document.getElementById('toggleMode');
+    const singleMode = document.getElementById('singleMode');
+    const compareMode = document.getElementById('compareMode');
+    
+    let currentMode = 'single';
 
-    // Обработчик отправки формы
+    // Переключение режима
+    toggleModeBtn.addEventListener('click', function() {
+        if (currentMode === 'single') {
+            currentMode = 'compare';
+            singleMode.style.display = 'none';
+            compareMode.style.display = 'block';
+            toggleModeBtn.innerHTML = '<i class="fas fa-user"></i> Одиночный режим';
+            hideStats();
+            hideComparison();
+        } else {
+            currentMode = 'single';
+            singleMode.style.display = 'block';
+            compareMode.style.display = 'none';
+            toggleModeBtn.innerHTML = '<i class="fas fa-exchange-alt"></i> Режим сравнения';
+            hideComparison();
+            hideStats();
+        }
+    });
+
+    // Обработчик отправки формы поиска
     searchForm.addEventListener('submit', async function(e) {
         e.preventDefault();
         
@@ -20,6 +46,21 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         await fetchUserStats(username);
+    });
+    
+    // Обработчик отправки формы сравнения
+    compareForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const username1 = document.getElementById('username1').value.trim();
+        const username2 = document.getElementById('username2').value.trim();
+        
+        if (!username1 || !username2) {
+            showError('Пожалуйста, введите оба username');
+            return;
+        }
+
+        await compareUsers(username1, username2);
     });
 
     // Функция для получения статистики пользователя
@@ -225,6 +266,101 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function hideStats() {
         statsSection.style.display = 'none';
+    }
+    
+    function showComparison() {
+        comparisonSection.style.display = 'block';
+        setTimeout(() => {
+            comparisonSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+    }
+    
+    function hideComparison() {
+        comparisonSection.style.display = 'none';
+    }
+    
+    // Функция сравнения двух пользователей
+    async function compareUsers(username1, username2) {
+        showLoading();
+        hideError();
+        hideComparison();
+        
+        try {
+            const response = await fetch(`/api/compare/${username1}/${username2}`);
+            const result = await response.json();
+            
+            if (!response.ok || !result.success) {
+                throw new Error(result.error || 'Ошибка при сравнении');
+            }
+            
+            displayComparison(result);
+            
+        } catch (err) {
+            showError(err.message || 'Произошла ошибка при сравнении');
+            console.error('Error:', err);
+        } finally {
+            hideLoading();
+        }
+    }
+    
+    // Отображение результатов сравнения
+    function displayComparison(data) {
+        const comp = data.comparison;
+        const user1 = data.user1;
+        const user2 = data.user2;
+        
+        // Followers
+        document.getElementById('comp-followers-1').textContent = formatNumber(comp.followers.user1);
+        document.getElementById('comp-followers-2').textContent = formatNumber(comp.followers.user2);
+        setWinner('comp-followers-winner', comp.followers.winner);
+        
+        // Repos
+        document.getElementById('comp-repos-1').textContent = formatNumber(comp.repos.user1);
+        document.getElementById('comp-repos-2').textContent = formatNumber(comp.repos.user2);
+        setWinner('comp-repos-winner', comp.repos.winner);
+        
+        // Stars
+        document.getElementById('comp-stars-1').textContent = formatNumber(comp.stars.user1);
+        document.getElementById('comp-stars-2').textContent = formatNumber(comp.stars.user2);
+        setWinner('comp-stars-winner', comp.stars.winner);
+        
+        // Forks
+        document.getElementById('comp-forks-1').textContent = formatNumber(comp.forks.user1);
+        document.getElementById('comp-forks-2').textContent = formatNumber(comp.forks.user2);
+        setWinner('comp-forks-winner', comp.forks.winner);
+        
+        // Languages
+        document.getElementById('comp-langs-1').textContent = formatNumber(comp.languages.user1);
+        document.getElementById('comp-langs-2').textContent = formatNumber(comp.languages.user2);
+        setWinner('comp-langs-winner', comp.languages.winner);
+        
+        // Profiles
+        document.getElementById('avatar1').src = user1.profile.avatar_url;
+        document.getElementById('name1').textContent = user1.profile.name;
+        document.getElementById('login1').textContent = '@' + user1.profile.login;
+        
+        document.getElementById('avatar2').src = user2.profile.avatar_url;
+        document.getElementById('name2').textContent = user2.profile.name;
+        document.getElementById('login2').textContent = '@' + user2.profile.login;
+        
+        showComparison();
+    }
+    
+    // Установка значка победителя
+    function setWinner(elementId, winner) {
+        const badge = document.getElementById(elementId);
+        badge.className = 'winner-badge';
+        
+        if (winner === 1) {
+            badge.classList.add('user1-wins');
+            badge.textContent = '👑 Побеждает';
+        } else if (winner === 2) {
+            badge.classList.add('user2-wins');
+            badge.textContent = '👑 Побеждает';
+        } else {
+            badge.classList.add('tie');
+            badge.textContent = '🤝 Равны';
+        }
     }
 
     // Форматирование чисел

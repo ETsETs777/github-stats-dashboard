@@ -45,30 +45,85 @@
             <div class="row justify-content-center">
                 <div class="col-lg-8">
                     <div class="search-card">
-                        <h2 class="text-center mb-4">
-                            <i class="fas fa-search"></i> Найти пользователя GitHub
-                        </h2>
-                        <form id="searchForm">
-                            <div class="input-group input-group-lg">
-                                <span class="input-group-text">
-                                    <i class="fab fa-github"></i>
-                                </span>
-                                <input 
-                                    type="text" 
-                                    class="form-control" 
-                                    id="username" 
-                                    placeholder="Введите GitHub username..." 
-                                    required
-                                    autocomplete="off"
-                                >
-                                <button class="btn btn-primary" type="submit">
-                                    <i class="fas fa-rocket"></i> Анализировать
-                                </button>
-                            </div>
-                            <div class="form-text text-center mt-3">
-                                Пример: octocat, torvalds, gaearon
-                            </div>
-                        </form>
+                        <div class="text-center mb-3">
+                            <button class="btn btn-sm btn-outline-light" id="toggleMode">
+                                <i class="fas fa-exchange-alt"></i> Режим сравнения
+                            </button>
+                        </div>
+                        
+                        <!-- Single User Mode -->
+                        <div id="singleMode">
+                            <h2 class="text-center mb-4">
+                                <i class="fas fa-search"></i> Найти пользователя GitHub
+                            </h2>
+                            <form id="searchForm">
+                                <div class="input-group input-group-lg">
+                                    <span class="input-group-text">
+                                        <i class="fab fa-github"></i>
+                                    </span>
+                                    <input 
+                                        type="text" 
+                                        class="form-control" 
+                                        id="username" 
+                                        placeholder="Введите GitHub username..." 
+                                        autocomplete="off"
+                                    >
+                                    <button class="btn btn-primary" type="submit">
+                                        <i class="fas fa-rocket"></i> Анализировать
+                                    </button>
+                                </div>
+                                <div class="form-text text-center mt-3">
+                                    Пример: octocat, torvalds, gaearon
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <!-- Compare Mode -->
+                        <div id="compareMode" style="display: none;">
+                            <h2 class="text-center mb-4">
+                                <i class="fas fa-users"></i> Сравнить двух пользователей
+                            </h2>
+                            <form id="compareForm">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="fab fa-github"></i> 1
+                                            </span>
+                                            <input 
+                                                type="text" 
+                                                class="form-control" 
+                                                id="username1" 
+                                                placeholder="Первый пользователь..." 
+                                                autocomplete="off"
+                                            >
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="fab fa-github"></i> 2
+                                            </span>
+                                            <input 
+                                                type="text" 
+                                                class="form-control" 
+                                                id="username2" 
+                                                placeholder="Второй пользователь..." 
+                                                autocomplete="off"
+                                            >
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-center">
+                                    <button class="btn btn-primary btn-lg" type="submit">
+                                        <i class="fas fa-balance-scale"></i> Сравнить
+                                    </button>
+                                </div>
+                                <div class="form-text text-center mt-3">
+                                    Пример: octocat vs torvalds
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -248,6 +303,98 @@
                                 </thead>
                                 <tbody id="languagesTable"></tbody>
                             </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Comparison Section -->
+        <div id="comparisonSection" style="display: none;">
+            <div class="row mt-5">
+                <div class="col-12">
+                    <h2 class="text-center text-light mb-4">
+                        <i class="fas fa-balance-scale"></i> Результаты сравнения
+                    </h2>
+                </div>
+            </div>
+            
+            <!-- Comparison Cards -->
+            <div class="row mt-4">
+                <div class="col-md-2">
+                    <div class="comparison-card">
+                        <div class="comparison-label">Подписчики</div>
+                        <div class="comparison-values">
+                            <span id="comp-followers-1" class="user1-val"></span>
+                            <span class="vs">VS</span>
+                            <span id="comp-followers-2" class="user2-val"></span>
+                        </div>
+                        <div id="comp-followers-winner" class="winner-badge"></div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="comparison-card">
+                        <div class="comparison-label">Репозитории</div>
+                        <div class="comparison-values">
+                            <span id="comp-repos-1" class="user1-val"></span>
+                            <span class="vs">VS</span>
+                            <span id="comp-repos-2" class="user2-val"></span>
+                        </div>
+                        <div id="comp-repos-winner" class="winner-badge"></div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="comparison-card">
+                        <div class="comparison-label">Звезды</div>
+                        <div class="comparison-values">
+                            <span id="comp-stars-1" class="user1-val"></span>
+                            <span class="vs">VS</span>
+                            <span id="comp-stars-2" class="user2-val"></span>
+                        </div>
+                        <div id="comp-stars-winner" class="winner-badge"></div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="comparison-card">
+                        <div class="comparison-label">Форки</div>
+                        <div class="comparison-values">
+                            <span id="comp-forks-1" class="user1-val"></span>
+                            <span class="vs">VS</span>
+                            <span id="comp-forks-2" class="user2-val"></span>
+                        </div>
+                        <div id="comp-forks-winner" class="winner-badge"></div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="comparison-card">
+                        <div class="comparison-label">Языки</div>
+                        <div class="comparison-values">
+                            <span id="comp-langs-1" class="user1-val"></span>
+                            <span class="vs">VS</span>
+                            <span id="comp-langs-2" class="user2-val"></span>
+                        </div>
+                        <div id="comp-langs-winner" class="winner-badge"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Side by Side Profiles -->
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <div class="profile-card">
+                        <div class="text-center">
+                            <img id="avatar1" src="" alt="Avatar" class="profile-avatar">
+                            <h3 id="name1" class="mt-3"></h3>
+                            <p id="login1" class="text-muted"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="profile-card">
+                        <div class="text-center">
+                            <img id="avatar2" src="" alt="Avatar" class="profile-avatar">
+                            <h3 id="name2" class="mt-3"></h3>
+                            <p id="login2" class="text-muted"></p>
                         </div>
                     </div>
                 </div>

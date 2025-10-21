@@ -25,12 +25,39 @@ def get_stats(username):
         return jsonify({'success': False, 'error': str(e)}), 500
 
 
+@app.route('/api/compare/<username1>/<username2>')
+def compare_users(username1, username2):
+    if not username1 or not username2:
+        return jsonify({'success': False, 'error': 'Оба username обязательны'}), 400
+    
+    try:
+        stats1 = github_stats.get_user_stats(username1)
+        stats2 = github_stats.get_user_stats(username2)
+        
+        if not stats1['success'] or not stats2['success']:
+            return jsonify({
+                'success': False, 
+                'error': 'Ошибка получения данных одного из пользователей'
+            }), 400
+        
+        comparison = github_stats.compare_users(stats1['data'], stats2['data'])
+        
+        return jsonify({
+            'success': True,
+            'user1': stats1['data'],
+            'user2': stats2['data'],
+            'comparison': comparison
+        })
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+
 @app.route('/api/health')
 def health_check():
     return jsonify({
         'status': 'healthy',
         'service': 'GitHub Stats Dashboard',
-        'version': '1.0.0'
+        'version': '1.1.0'
     })
 
 

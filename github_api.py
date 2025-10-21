@@ -245,3 +245,47 @@ class GitHubStats:
             charts['stars_vs_forks'] = fig_scatter.to_html(full_html=False, include_plotlyjs='cdn')
         
         return charts
+    
+    @staticmethod
+    def compare_users(user1_data, user2_data):
+        profile1 = user1_data['profile']
+        profile2 = user2_data['profile']
+        repos1 = user1_data['repositories']
+        repos2 = user2_data['repositories']
+        langs1 = user1_data['languages']
+        langs2 = user2_data['languages']
+        
+        comparison = {
+            'followers': {
+                'user1': profile1['followers'],
+                'user2': profile2['followers'],
+                'diff': profile1['followers'] - profile2['followers'],
+                'winner': 1 if profile1['followers'] > profile2['followers'] else (2 if profile2['followers'] > profile1['followers'] else 0)
+            },
+            'repos': {
+                'user1': repos1['total_repos'],
+                'user2': repos2['total_repos'],
+                'diff': repos1['total_repos'] - repos2['total_repos'],
+                'winner': 1 if repos1['total_repos'] > repos2['total_repos'] else (2 if repos2['total_repos'] > repos1['total_repos'] else 0)
+            },
+            'stars': {
+                'user1': repos1['total_stars'],
+                'user2': repos2['total_stars'],
+                'diff': repos1['total_stars'] - repos2['total_stars'],
+                'winner': 1 if repos1['total_stars'] > repos2['total_stars'] else (2 if repos2['total_stars'] > repos1['total_stars'] else 0)
+            },
+            'forks': {
+                'user1': repos1['total_forks'],
+                'user2': repos2['total_forks'],
+                'diff': repos1['total_forks'] - repos2['total_forks'],
+                'winner': 1 if repos1['total_forks'] > repos2['total_forks'] else (2 if repos2['total_forks'] > repos1['total_forks'] else 0)
+            },
+            'languages': {
+                'user1': langs1['total_languages'],
+                'user2': langs2['total_languages'],
+                'diff': langs1['total_languages'] - langs2['total_languages'],
+                'winner': 1 if langs1['total_languages'] > langs2['total_languages'] else (2 if langs2['total_languages'] > langs1['total_languages'] else 0)
+            }
+        }
+        
+        return comparison
