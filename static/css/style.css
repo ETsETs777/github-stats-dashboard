@@ -12,6 +12,85 @@ body {
     min-height: 100vh;
     position: relative;
     overflow-x: hidden;
+    transition: all 0.3s ease;
+}
+
+body.light-theme {
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 50%, #90caf9 100%);
+    color: #1a1a1a;
+}
+
+body.light-theme .navbar {
+    background: rgba(255, 255, 255, 0.9);
+    border-bottom-color: rgba(0, 0, 0, 0.1);
+}
+
+body.light-theme .navbar-brand,
+body.light-theme .navbar-text {
+    color: #1a1a1a !important;
+}
+
+body.light-theme .search-card,
+body.light-theme .profile-card,
+body.light-theme .stats-card,
+body.light-theme .chart-card,
+body.light-theme .repos-card,
+body.light-theme .langs-card,
+body.light-theme .history-card,
+body.light-theme .comparison-card {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(0, 0, 0, 0.1);
+    color: #1a1a1a;
+}
+
+body.light-theme h1, body.light-theme h2, body.light-theme h3,
+body.light-theme h4, body.light-theme h5 {
+    color: #1a1a1a;
+}
+
+body.light-theme .text-light {
+    color: #1a1a1a !important;
+}
+
+body.light-theme .text-muted {
+    color: #666 !important;
+}
+
+body.light-theme #username,
+body.light-theme #username1,
+body.light-theme #username2 {
+    background: rgba(0, 0, 0, 0.05);
+    color: #1a1a1a;
+    border-color: rgba(0, 0, 0, 0.2);
+}
+
+body.light-theme #username::placeholder,
+body.light-theme #username1::placeholder,
+body.light-theme #username2::placeholder {
+    color: rgba(0, 0, 0, 0.5);
+}
+
+body.light-theme .input-group-text {
+    background: rgba(0, 0, 0, 0.05);
+    border-color: rgba(0, 0, 0, 0.2);
+    color: #1a1a1a;
+}
+
+body.light-theme .table-dark {
+    background: transparent;
+    color: #1a1a1a;
+}
+
+body.light-theme .table-dark thead th,
+body.light-theme .table-dark tbody td {
+    color: #1a1a1a;
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+body.light-theme .footer {
+    background: rgba(255, 255, 255, 0.9);
+    border-top-color: rgba(0, 0, 0, 0.1);
+    color: #1a1a1a;
 }
 
 /* ===== АНИМИРОВАННЫЙ ФОН ===== */

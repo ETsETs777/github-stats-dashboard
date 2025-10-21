@@ -18,6 +18,29 @@ document.addEventListener('DOMContentLoaded', function() {
     
     let currentMode = 'single';
     const MAX_HISTORY = 10;
+    const themeToggleBtn = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    
+    // Загрузка сохраненной темы при старте
+    const savedTheme = localStorage.getItem('github_dashboard_theme') || 'dark';
+    if (savedTheme === 'light') {
+        document.body.classList.add('light-theme');
+        themeIcon.className = 'fas fa-sun';
+    }
+    
+    // Переключение темы
+    themeToggleBtn.addEventListener('click', function() {
+        document.body.classList.toggle('light-theme');
+        const isLight = document.body.classList.contains('light-theme');
+        
+        if (isLight) {
+            themeIcon.className = 'fas fa-sun';
+            localStorage.setItem('github_dashboard_theme', 'light');
+        } else {
+            themeIcon.className = 'fas fa-moon';
+            localStorage.setItem('github_dashboard_theme', 'dark');
+        }
+    });
     
     // Загрузка истории при старте
     loadHistory();
