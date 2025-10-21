@@ -151,10 +151,17 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         // Статистика профиля
-        document.getElementById('followers').textContent = formatNumber(data.profile.followers);
-        document.getElementById('following').textContent = formatNumber(data.profile.following);
+        if (data.profile.is_organization) {
+            document.getElementById('followers').textContent = formatNumber(data.profile.public_members || 0);
+            document.getElementById('following').textContent = '-';
+            document.getElementById('gists').textContent = '-';
+            document.querySelector('[for="followers"] .stat-label').textContent = 'Участники';
+        } else {
+            document.getElementById('followers').textContent = formatNumber(data.profile.followers);
+            document.getElementById('following').textContent = formatNumber(data.profile.following);
+            document.getElementById('gists').textContent = formatNumber(data.profile.public_gists);
+        }
         document.getElementById('repos').textContent = formatNumber(data.profile.public_repos);
-        document.getElementById('gists').textContent = formatNumber(data.profile.public_gists);
 
         // Статистика репозиториев
         document.getElementById('totalStars').textContent = formatNumber(data.repositories.total_stars);

@@ -44,21 +44,32 @@ class GitHubStats:
             return {'success': False, 'error': f'Неожиданная ошибка: {str(e)}'}
     
     def _get_profile_info(self):
-        return {
+        is_org = self.user.type == 'Organization'
+        
+        profile = {
             'login': self.user.login,
             'name': self.user.name or self.user.login,
             'bio': self.user.bio or 'Нет описания',
             'avatar_url': self.user.avatar_url,
             'html_url': self.user.html_url,
-            'followers': self.user.followers,
-            'following': self.user.following,
             'public_repos': self.user.public_repos,
-            'public_gists': self.user.public_gists,
             'created_at': self.user.created_at.strftime('%d.%m.%Y'),
-            'company': self.user.company or 'Не указано',
             'location': self.user.location or 'Не указано',
             'blog': self.user.blog or 'Нет',
+            'type': 'organization' if is_org else 'user',
+            'is_organization': is_org
         }
+        
+        if is_org:
+            profile['email'] = self.user.email or 'Не указано'
+            profile['public_members'] = getattr(self.user, 'public_members_count', 0) if hasattr(self.user, 'public_members_count') else 0
+        else:
+            profile['followers'] = self.user.followers
+            profile['following'] = self.user.following
+            profile['public_gists'] = self.user.public_gists
+            profile['company'] = self.user.company or 'Не указано'
+        
+        return profile
     
     def _get_repositories_stats(self):
         total_stars = sum(repo.stargazers_count for repo in self.repos)
