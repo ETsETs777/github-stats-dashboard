@@ -1,0 +1,15 @@
+# GitHub Stats Dashboard - Environment Variables
+# Скопируйте этот файл в .env и заполните своими значениями
+
+# Flask настройки
+SECRET_KEY=your-secret-key-here-change-in-production
+DEBUG=True
+
+# GitHub API Token (опционально, но рекомендуется)
+# Получить можно здесь: https://github.com/settings/tokens
+# Увеличивает лимит запросов с 60 до 5000 в час
+GITHUB_TOKEN=
+
+# Пример с токеном:
+# GITHUB_TOKEN=ghp_your_token_here
+
