@@ -762,3 +762,34 @@ body.light-theme .footer {
     color: #5865f2;
 }
 
+/* ===== PRINT STYLES ===== */
+@media print {
+    .navbar,
+    .search-section,
+    .search-history,
+    .footer,
+    .animated-background {
+        display: none !important;
+    }
+    
+    body {
+        background: white !important;
+        color: black !important;
+    }
+    
+    .profile-card,
+    .stats-card,
+    .chart-card,
+    .repos-card,
+    .langs-card {
+        page-break-inside: avoid;
+        background: white !important;
+        color: black !important;
+        border: 1px solid #ddd !important;
+    }
+    
+    h1, h2, h3, h4, h5 {
+        color: black !important;
+    }
+}
+

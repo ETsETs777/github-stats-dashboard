@@ -20,6 +20,21 @@ document.addEventListener('DOMContentLoaded', function() {
     const MAX_HISTORY = 10;
     const themeToggleBtn = document.getElementById('themeToggle');
     const themeIcon = document.getElementById('themeIcon');
+    const exportBtn = document.getElementById('exportBtn');
+    
+    // Экспорт статистики
+    exportBtn.addEventListener('click', function() {
+        const exportMenu = confirm('Выберите способ экспорта:\nOK - Печать в PDF\nОтмена - Скопировать URL для скриншота');
+        
+        if (exportMenu) {
+            window.print();
+        } else {
+            const url = window.location.href;
+            navigator.clipboard.writeText(url).then(() => {
+                alert('URL скопирован! Используйте сервис скриншотов или расширение браузера.');
+            });
+        }
+    });
     
     // Загрузка сохраненной темы при старте
     const savedTheme = localStorage.getItem('github_dashboard_theme') || 'dark';
@@ -318,7 +333,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function showStats() {
         statsSection.style.display = 'block';
-        // Плавный скролл к статистике
+        exportBtn.style.display = 'inline-block';
         setTimeout(() => {
             statsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }, 100);
