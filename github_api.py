@@ -7,29 +7,13 @@ from config import Config
 
 
 class GitHubStats:
-    """Класс для получения и анализа статистики GitHub пользователя"""
     
     def __init__(self, token=None):
-        """
-        Инициализация клиента GitHub API
-        
-        Args:
-            token (str, optional): GitHub Personal Access Token для увеличения лимита запросов
-        """
         self.github = Github(token) if token else Github()
         self.user = None
         self.repos = []
         
     def get_user_stats(self, username):
-        """
-        Получить полную статистику пользователя
-        
-        Args:
-            username (str): GitHub username
-            
-        Returns:
-            dict: Словарь со всей статистикой пользователя
-        """
         try:
             self.user = self.github.get_user(username)
             self.repos = list(self.user.get_repos())[:Config.MAX_REPOS]
@@ -50,7 +34,6 @@ class GitHubStats:
             return {'success': False, 'error': f'Неожиданная ошибка: {str(e)}'}
     
     def _get_profile_info(self):
-        """Получить информацию о профиле пользователя"""
         return {
             'login': self.user.login,
             'name': self.user.name or self.user.login,
@@ -68,12 +51,10 @@ class GitHubStats:
         }
     
     def _get_repositories_stats(self):
-        """Получить статистику по репозиториям"""
         total_stars = sum(repo.stargazers_count for repo in self.repos)
         total_forks = sum(repo.forks_count for repo in self.repos)
         total_watchers = sum(repo.watchers_count for repo in self.repos)
         
-        # Топ репозиториев по звездам
         top_repos = sorted(
             self.repos,
             key=lambda r: r.stargazers_count,
@@ -100,7 +81,6 @@ class GitHubStats:
         }
     
     def _get_languages_stats(self):
-        """Получить статистику по языкам программирования"""
         languages = Counter()
         
         for repo in self.repos:
@@ -121,8 +101,6 @@ class GitHubStats:
         }
     
     def _get_activity_stats(self):
-        """Получить статистику активности"""
-        # Анализируем последние обновления репозиториев
         recent_updates = []
         one_year_ago = datetime.now(timezone.utc) - timedelta(days=365)
         
@@ -130,7 +108,6 @@ class GitHubStats:
             if repo.updated_at > one_year_ago:
                 recent_updates.append(repo.updated_at)
         
-        # Группируем по месяцам
         monthly_activity = defaultdict(int)
         for date in recent_updates:
             month_key = date.strftime('%Y-%m')
@@ -142,10 +119,8 @@ class GitHubStats:
         }
     
     def _generate_charts(self):
-        """Генерация графиков с помощью Plotly"""
         charts = {}
         
-        # 1. Круговая диаграмма языков программирования
         languages = Counter()
         for repo in self.repos:
             if repo.language:
@@ -167,13 +142,11 @@ class GitHubStats:
             )
             charts['languages_pie'] = fig_languages.to_html(full_html=False, include_plotlyjs='cdn')
         
-        # 2. Барчарт топ репозиториев по звездам
         top_repos = sorted(self.repos, key=lambda r: r.stargazers_count, reverse=True)[:10]
         if top_repos and len(top_repos) > 0:
             repo_names = [repo.name for repo in top_repos]
             repo_stars = [repo.stargazers_count for repo in top_repos]
             
-            # Используем более нейтральные цвета если все звезды = 0
             if sum(repo_stars) == 0:
                 colors = ['#5865f2'] * len(repo_stars)
             else:
@@ -205,7 +178,6 @@ class GitHubStats:
             )
             charts['top_repos_bar'] = fig_repos.to_html(full_html=False, include_plotlyjs='cdn')
         
-        # 3. График активности по месяцам
         one_year_ago = datetime.now(timezone.utc) - timedelta(days=365)
         monthly_activity = defaultdict(int)
         
@@ -242,7 +214,6 @@ class GitHubStats:
             )
             charts['activity_timeline'] = fig_activity.to_html(full_html=False, include_plotlyjs='cdn')
         
-        # 4. Статистика форков vs звезд
         repos_with_stars = [r for r in self.repos if r.stargazers_count > 0]
         if repos_with_stars:
             fig_scatter = go.Figure(data=[
@@ -274,4 +245,3 @@ class GitHubStats:
             charts['stars_vs_forks'] = fig_scatter.to_html(full_html=False, include_plotlyjs='cdn')
         
         return charts
-
