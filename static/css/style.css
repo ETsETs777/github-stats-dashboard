@@ -639,3 +639,47 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
+/* ===== SEARCH HISTORY STYLES ===== */
+.history-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 1.5rem;
+    animation: fadeIn 0.5s ease;
+}
+
+.history-card h5 {
+    color: #fff;
+    font-weight: 600;
+    margin: 0;
+}
+
+.history-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.history-item {
+    background: rgba(88, 101, 242, 0.2);
+    border: 1px solid rgba(88, 101, 242, 0.4);
+    border-radius: 20px;
+    padding: 0.5rem 1rem;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.history-item:hover {
+    background: rgba(88, 101, 242, 0.4);
+    transform: scale(1.05);
+}
+
+.history-item i {
+    color: #5865f2;
+}
+

@@ -12,8 +12,23 @@ document.addEventListener('DOMContentLoaded', function() {
     const toggleModeBtn = document.getElementById('toggleMode');
     const singleMode = document.getElementById('singleMode');
     const compareMode = document.getElementById('compareMode');
+    const searchHistory = document.getElementById('searchHistory');
+    const historyList = document.getElementById('historyList');
+    const clearHistoryBtn = document.getElementById('clearHistory');
     
     let currentMode = 'single';
+    const MAX_HISTORY = 10;
+    
+    // Загрузка истории при старте
+    loadHistory();
+    
+    // Очистка истории
+    clearHistoryBtn.addEventListener('click', function() {
+        if (confirm('Очистить всю историю поиска?')) {
+            localStorage.removeItem('github_search_history');
+            loadHistory();
+        }
+    });
 
     // Переключение режима
     toggleModeBtn.addEventListener('click', function() {
@@ -80,6 +95,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Отображаем статистику
             displayStats(result.data);
+            
+            // Добавляем в историю
+            addToHistory(username, result.data.profile.name, result.data.profile.avatar_url);
             
         } catch (err) {
             showError(err.message || 'Произошла ошибка при загрузке данных');
@@ -421,6 +439,58 @@ document.addEventListener('DOMContentLoaded', function() {
             searchForm.dispatchEvent(new Event('submit'));
         }
     });
+    
+    // Функции для работы с историей поиска
+    function addToHistory(username, name, avatar) {
+        let history = JSON.parse(localStorage.getItem('github_search_history') || '[]');
+        
+        // Удаляем дубликаты
+        history = history.filter(item => item.username !== username);
+        
+        // Добавляем в начало
+        history.unshift({
+            username: username,
+            name: name,
+            avatar: avatar,
+            timestamp: new Date().toISOString()
+        });
+        
+        // Ограничиваем размер истории
+        if (history.length > MAX_HISTORY) {
+            history = history.slice(0, MAX_HISTORY);
+        }
+        
+        localStorage.setItem('github_search_history', JSON.stringify(history));
+        loadHistory();
+    }
+    
+    function loadHistory() {
+        const history = JSON.parse(localStorage.getItem('github_search_history') || '[]');
+        
+        if (history.length === 0) {
+            searchHistory.style.display = 'none';
+            return;
+        }
+        
+        searchHistory.style.display = 'block';
+        historyList.innerHTML = '';
+        
+        history.forEach(item => {
+            const historyItem = document.createElement('div');
+            historyItem.className = 'history-item';
+            historyItem.innerHTML = `
+                <img src="${item.avatar}" alt="${item.name}" style="width: 24px; height: 24px; border-radius: 50%;">
+                <span>${item.username}</span>
+            `;
+            
+            historyItem.addEventListener('click', function() {
+                usernameInput.value = item.username;
+                searchForm.dispatchEvent(new Event('submit'));
+            });
+            
+            historyList.appendChild(historyItem);
+        });
+    }
 });
 
 // Добавляем звездный эффект на фон (опционально)
