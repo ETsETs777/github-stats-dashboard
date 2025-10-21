@@ -193,6 +193,18 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             document.getElementById('scatterChart').innerHTML = '<p class="text-center text-muted p-5">⭐ Нет данных для отображения</p>';
         }
+        
+        if (data.charts.repos_by_year) {
+            document.getElementById('reposByYearChart').innerHTML = data.charts.repos_by_year;
+        } else {
+            document.getElementById('reposByYearChart').innerHTML = '<p class="text-center text-muted p-5">📅 Нет данных для отображения</p>';
+        }
+        
+        if (data.charts.stars_forks_grouped) {
+            document.getElementById('groupedChart').innerHTML = data.charts.stars_forks_grouped;
+        } else {
+            document.getElementById('groupedChart').innerHTML = '<p class="text-center text-muted p-5">📊 Нет данных для отображения</p>';
+        }
 
         // Топ репозитории
         displayTopRepos(data.repositories.top_repos);

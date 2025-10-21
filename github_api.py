@@ -265,6 +265,64 @@ class GitHubStats:
             )
             charts['stars_vs_forks'] = fig_scatter.to_html(full_html=False, include_plotlyjs='cdn')
         
+        repos_by_year = defaultdict(int)
+        for repo in self.repos:
+            year = repo.created_at.year
+            repos_by_year[year] += 1
+        
+        if repos_by_year:
+            sorted_years = sorted(repos_by_year.items())
+            years = [str(y[0]) for y in sorted_years]
+            counts = [y[1] for y in sorted_years]
+            
+            fig_yearly = go.Figure(data=[
+                go.Bar(
+                    x=years,
+                    y=counts,
+                    marker=dict(
+                        color=counts,
+                        colorscale='Blues',
+                        showscale=False
+                    ),
+                    text=counts,
+                    textposition='auto'
+                )
+            ])
+            fig_yearly.update_layout(
+                title='Репозитории по годам создания',
+                xaxis_title='Год',
+                yaxis_title='Количество репозиториев',
+                template='plotly_dark',
+                paper_bgcolor='rgba(0,0,0,0)',
+                plot_bgcolor='rgba(0,0,0,0)',
+                font=dict(color='white', size=12),
+                height=350
+            )
+            charts['repos_by_year'] = fig_yearly.to_html(full_html=False, include_plotlyjs='cdn')
+        
+        top_10_repos = sorted(self.repos, key=lambda r: r.stargazers_count, reverse=True)[:10]
+        if top_10_repos:
+            repo_names_short = [r.name[:20] for r in top_10_repos]
+            stars = [r.stargazers_count for r in top_10_repos]
+            forks = [r.forks_count for r in top_10_repos]
+            
+            fig_grouped = go.Figure(data=[
+                go.Bar(name='Звезды', x=repo_names_short, y=stars, marker_color='#ffd700'),
+                go.Bar(name='Форки', x=repo_names_short, y=forks, marker_color='#5865f2')
+            ])
+            fig_grouped.update_layout(
+                title='Топ 10: Звезды и Форки',
+                xaxis_title='Репозиторий',
+                yaxis_title='Количество',
+                barmode='group',
+                template='plotly_dark',
+                paper_bgcolor='rgba(0,0,0,0)',
+                plot_bgcolor='rgba(0,0,0,0)',
+                font=dict(color='white', size=12),
+                height=400
+            )
+            charts['stars_forks_grouped'] = fig_grouped.to_html(full_html=False, include_plotlyjs='cdn')
+        
         return charts
     
     @staticmethod
