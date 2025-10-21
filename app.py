@@ -66,7 +66,7 @@ def health_check():
     return jsonify({
         'status': 'healthy',
         'service': 'GitHub Stats Dashboard',
-        'version': '1.2.0'
+        'version': '2.0.0'
     })
 
 
