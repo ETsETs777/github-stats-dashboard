@@ -169,9 +169,15 @@ class GitHubStats:
         
         # 2. Барчарт топ репозиториев по звездам
         top_repos = sorted(self.repos, key=lambda r: r.stargazers_count, reverse=True)[:10]
-        if top_repos:
+        if top_repos and len(top_repos) > 0:
             repo_names = [repo.name for repo in top_repos]
             repo_stars = [repo.stargazers_count for repo in top_repos]
+            
+            # Используем более нейтральные цвета если все звезды = 0
+            if sum(repo_stars) == 0:
+                colors = ['#5865f2'] * len(repo_stars)
+            else:
+                colors = repo_stars
             
             fig_repos = go.Figure(data=[
                 go.Bar(
@@ -179,10 +185,12 @@ class GitHubStats:
                     y=repo_names,
                     orientation='h',
                     marker=dict(
-                        color=repo_stars,
+                        color=colors,
                         colorscale='Viridis',
-                        showscale=True
-                    )
+                        showscale=(sum(repo_stars) > 0)
+                    ),
+                    text=repo_stars,
+                    textposition='auto'
                 )
             ])
             fig_repos.update_layout(

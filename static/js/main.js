@@ -83,15 +83,26 @@ document.addEventListener('DOMContentLoaded', function() {
         // Графики
         if (data.charts.languages_pie) {
             document.getElementById('languagesChart').innerHTML = data.charts.languages_pie;
+        } else {
+            document.getElementById('languagesChart').innerHTML = '<p class="text-center text-muted p-5">📊 Нет данных о языках программирования</p>';
         }
+        
         if (data.charts.top_repos_bar) {
             document.getElementById('topReposChart').innerHTML = data.charts.top_repos_bar;
+        } else {
+            document.getElementById('topReposChart').innerHTML = '<p class="text-center text-muted p-5">📚 Нет репозиториев для отображения</p>';
         }
+        
         if (data.charts.activity_timeline) {
             document.getElementById('activityChart').innerHTML = data.charts.activity_timeline;
+        } else {
+            document.getElementById('activityChart').innerHTML = '<p class="text-center text-muted p-5">📈 Нет активности за последний год</p>';
         }
+        
         if (data.charts.stars_vs_forks) {
             document.getElementById('scatterChart').innerHTML = data.charts.stars_vs_forks;
+        } else {
+            document.getElementById('scatterChart').innerHTML = '<p class="text-center text-muted p-5">⭐ Нет данных для отображения</p>';
         }
 
         // Топ репозитории
@@ -108,6 +119,11 @@ document.addEventListener('DOMContentLoaded', function() {
     function displayTopRepos(repos) {
         const reposList = document.getElementById('topReposList');
         reposList.innerHTML = '';
+
+        if (!repos || repos.length === 0) {
+            reposList.innerHTML = '<p class="text-center text-muted p-5">📚 Нет репозиториев для отображения</p>';
+            return;
+        }
 
         repos.forEach((repo, index) => {
             const repoItem = document.createElement('div');
@@ -145,6 +161,13 @@ document.addEventListener('DOMContentLoaded', function() {
     function displayLanguagesTable(languages) {
         const table = document.getElementById('languagesTable');
         table.innerHTML = '';
+
+        if (!languages || languages.length === 0) {
+            const row = document.createElement('tr');
+            row.innerHTML = '<td colspan="5" class="text-center text-muted p-4">💻 Нет данных о языках программирования</td>';
+            table.appendChild(row);
+            return;
+        }
 
         languages.forEach((lang, index) => {
             const row = document.createElement('tr');
