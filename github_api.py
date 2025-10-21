@@ -291,12 +291,11 @@ class GitHubStats:
             )
             charts['stars_vs_forks'] = fig_scatter.to_html(full_html=False, include_plotlyjs='cdn')
         
-        repos_by_year = defaultdict(int)
-        for repo in self.repos:
-            year = repo.created_at.year
-            repos_by_year[year] += 1
-        
-        if repos_by_year:
+        if self.repos:
+            repos_by_year = defaultdict(int)
+            for repo in self.repos:
+                year = repo.created_at.year
+                repos_by_year[year] += 1
             sorted_years = sorted(repos_by_year.items())
             years = [str(y[0]) for y in sorted_years]
             counts = [y[1] for y in sorted_years]
@@ -325,9 +324,8 @@ class GitHubStats:
                 height=350
             )
             charts['repos_by_year'] = fig_yearly.to_html(full_html=False, include_plotlyjs='cdn')
-        
-        top_10_repos = sorted(self.repos, key=lambda r: r.stargazers_count, reverse=True)[:10]
-        if top_10_repos and len(top_10_repos) > 0:
+            
+            top_10_repos = sorted(self.repos, key=lambda r: r.stargazers_count, reverse=True)[:10]
             repo_names_short = [r.name[:20] for r in top_10_repos]
             stars = [r.stargazers_count for r in top_10_repos]
             forks = [r.forks_count for r in top_10_repos]
