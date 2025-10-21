@@ -184,69 +184,54 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('totalWatchers').textContent = formatNumber(data.repositories.total_watchers);
         document.getElementById('totalLanguages').textContent = formatNumber(data.languages.total_languages);
 
+        // Сначала скрываем все карточки
+        const allChartCards = ['languagesChartCard', 'topReposChartCard', 'activityChartCard', 
+                               'scatterChartCard', 'reposByYearChartCard', 'groupedChartCard',
+                               'weeklyActivityChartCard', 'repoTypesChartCard'];
+        allChartCards.forEach(cardId => {
+            const card = document.getElementById(cardId);
+            if (card) card.style.display = 'none';
+        });
+
         // Графики - показываем только если есть данные
-        const chartElement1 = document.getElementById('languagesChart');
         if (data.charts.languages_pie) {
-            chartElement1.innerHTML = data.charts.languages_pie;
-            chartElement1.closest('.chart-card').style.display = 'block';
-        } else {
-            chartElement1.closest('.chart-card').style.display = 'none';
+            document.getElementById('languagesChart').innerHTML = data.charts.languages_pie;
+            document.getElementById('languagesChartCard').style.display = 'block';
         }
         
-        const chartElement2 = document.getElementById('topReposChart');
         if (data.charts.top_repos_bar) {
-            chartElement2.innerHTML = data.charts.top_repos_bar;
-            chartElement2.closest('.chart-card').style.display = 'block';
-        } else {
-            chartElement2.closest('.chart-card').style.display = 'none';
+            document.getElementById('topReposChart').innerHTML = data.charts.top_repos_bar;
+            document.getElementById('topReposChartCard').style.display = 'block';
         }
         
-        const chartElement3 = document.getElementById('activityChart');
         if (data.charts.activity_timeline) {
-            chartElement3.innerHTML = data.charts.activity_timeline;
-            chartElement3.closest('.chart-card').style.display = 'block';
-        } else {
-            chartElement3.closest('.chart-card').style.display = 'none';
+            document.getElementById('activityChart').innerHTML = data.charts.activity_timeline;
+            document.getElementById('activityChartCard').style.display = 'block';
         }
         
-        const chartElement4 = document.getElementById('scatterChart');
         if (data.charts.stars_vs_forks) {
-            chartElement4.innerHTML = data.charts.stars_vs_forks;
-            chartElement4.closest('.chart-card').style.display = 'block';
-        } else {
-            chartElement4.closest('.chart-card').style.display = 'none';
+            document.getElementById('scatterChart').innerHTML = data.charts.stars_vs_forks;
+            document.getElementById('scatterChartCard').style.display = 'block';
         }
         
-        const chartElement5 = document.getElementById('reposByYearChart');
         if (data.charts.repos_by_year) {
-            chartElement5.innerHTML = data.charts.repos_by_year;
-            chartElement5.closest('.chart-card').style.display = 'block';
-        } else {
-            chartElement5.closest('.chart-card').style.display = 'none';
+            document.getElementById('reposByYearChart').innerHTML = data.charts.repos_by_year;
+            document.getElementById('reposByYearChartCard').style.display = 'block';
         }
         
-        const chartElement6 = document.getElementById('groupedChart');
         if (data.charts.stars_forks_grouped) {
-            chartElement6.innerHTML = data.charts.stars_forks_grouped;
-            chartElement6.closest('.chart-card').style.display = 'block';
-        } else {
-            chartElement6.closest('.chart-card').style.display = 'none';
+            document.getElementById('groupedChart').innerHTML = data.charts.stars_forks_grouped;
+            document.getElementById('groupedChartCard').style.display = 'block';
         }
         
-        const chartElement7 = document.getElementById('weeklyActivityChart');
         if (data.charts.weekly_activity) {
-            chartElement7.innerHTML = data.charts.weekly_activity;
-            chartElement7.closest('.chart-card').style.display = 'block';
-        } else {
-            chartElement7.closest('.chart-card').style.display = 'none';
+            document.getElementById('weeklyActivityChart').innerHTML = data.charts.weekly_activity;
+            document.getElementById('weeklyActivityChartCard').style.display = 'block';
         }
         
-        const chartElement8 = document.getElementById('repoTypesChart');
         if (data.charts.repo_types_pie) {
-            chartElement8.innerHTML = data.charts.repo_types_pie;
-            chartElement8.closest('.chart-card').style.display = 'block';
-        } else {
-            chartElement8.closest('.chart-card').style.display = 'none';
+            document.getElementById('repoTypesChart').innerHTML = data.charts.repo_types_pie;
+            document.getElementById('repoTypesChartCard').style.display = 'block';
         }
 
         // Топ репозитории
@@ -255,8 +240,32 @@ document.addEventListener('DOMContentLoaded', function() {
         // Таблица языков
         displayLanguagesTable(data.languages.languages);
 
+        // Скрываем пустые ряды графиков
+        hideEmptyChartRows();
+
         // Показываем секцию со статистикой
         showStats();
+    }
+
+    // Скрытие пустых рядов графиков
+    function hideEmptyChartRows() {
+        const rows = ['chartRow1', 'chartRow2', 'chartRow3', 'chartRow4', 'chartRow5'];
+        
+        rows.forEach(rowId => {
+            const row = document.getElementById(rowId);
+            if (!row) return;
+            
+            const cards = row.querySelectorAll('.chart-card');
+            let hasVisibleCard = false;
+            
+            cards.forEach(card => {
+                if (card.style.display !== 'none') {
+                    hasVisibleCard = true;
+                }
+            });
+            
+            row.style.display = hasVisibleCard ? 'flex' : 'none';
+        });
     }
 
     // Отображение топ репозиториев
